@@ -22,5 +22,8 @@ OS: Linux(Ubuntu 14.04).
 
 Instruction:
 
-1: Download the project and use Maven to setup this project in your local machine.
-2: use jetty or tomcat to run this application.
+Pull the repo from github.
+1: git clone https://github.com/nilesh892003/map1234.git
+2: Maven to setup this project in your local machine.
+	mvn jetty:run
+3: open 0.0.0.0:8080/map1234 in browser to access this application.
