@@ -23,6 +23,7 @@ OS: Linux(Ubuntu 14.04).
 Instruction:
 
 Pull the repo from github.
+
 1: git clone https://github.com/nilesh892003/map1234.git
 2: Maven to setup this project in your local machine.
 	mvn jetty:run
