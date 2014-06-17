@@ -27,20 +27,24 @@ public class Register extends HttpServlet {
 	 * Author: Nilesh Singh, George Mason University, MS Computer Science Date:
 	 * June, 16th, 2014.
 	 * 
-	 * Topic:This is a webapp that allows any user to sign up 
-	 * for http://myopenissues.com/magento/index.php.
-	 * after the process user will get success/error notifications.
+	 * Topic:This is a webapp that allows any user to sign up for
+	 * http://myopenissues.com/magento/index.php. after the process user will
+	 * get success/error notifications.
 	 * 
-	 * Web service: http://myopenissues.com/magento/index.php/customer/account/create/
+	 * Web service:
+	 * http://myopenissues.com/magento/index.php/customer/account/create/
 	 * 
-	 * Tool: HTTPComponents: HttpClient is a HTTP/1.1 compliant HTTP agent implementation based on HttpCore. 
-	 * It also provides reusable components for client-side authentication, 
-	 * HTTP state management, and HTTP connection management.  
+	 * Tool: HTTPComponents: HttpClient is a HTTP/1.1 compliant HTTP agent
+	 * implementation based on HttpCore. It also provides reusable components
+	 * for client-side authentication, HTTP state management, and HTTP
+	 * connection management.
 	 * 
-	 * Twitter Bootstrap: Sleek, intuitive, and powerful front-end framework for faster and easier web development.
+	 * Twitter Bootstrap: Sleek, intuitive, and powerful front-end framework for
+	 * faster and easier web development.
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
@@ -49,7 +53,7 @@ public class Register extends HttpServlet {
 		// "http://myopenissues.com/magento/index.php/customer/account/index/";
 		String successURL = "http://myopenissues.com/magento/index.php/";
 
-		String address = null;
+		String address = "./register.jsp";
 		String fname = request.getParameter("fname");
 		String lname = request.getParameter("lname");
 		String email = request.getParameter("email");
@@ -59,15 +63,31 @@ public class Register extends HttpServlet {
 		String success_url = request.getParameter("success_url");
 		String error_url = request.getParameter("error_url");
 
-		/*
-		 * //Validation
-		 * 
-		 * if(fname == null || fname.length() < 3){
-		 * request.setAttribute("fname",
-		 * "FirstName should be 3 character long"); } else if(lname == null ||
-		 * lname.length() < 3){ request.setAttribute("lname",
-		 * "lastName should be 3 character long"); }
-		 */
+		boolean isValid = true;
+
+		// Validation
+
+		if(!isValidName(fname)){
+			request.setAttribute("fname","First Name should be at least 3 character long");
+			isValid = false;
+		}
+		if(!isValidName(lname)){
+			request.setAttribute("lname", "Last Name should be at least 3 character long");
+			isValid = false;
+		}
+		if(!isValidEmail(email)){
+			request.setAttribute("email", "Not a valid email");
+			isValid = false;
+		}
+		if(!isValidPassword(password, confirmation)){
+			request.setAttribute("password", "Not a valid password");
+			isValid = false;
+		}
+		
+		if(!isValid){
+			RequestDispatcher dispatcher = request.getRequestDispatcher(address);
+			dispatcher.forward(request, response);
+		}
 
 		BasicCookieStore cookieStore = new BasicCookieStore();
 		BasicClientCookie cookie = new BasicClientCookie("SESSIONID", "map1234");
@@ -130,4 +150,33 @@ public class Register extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+
+	//Method for first and last name validation
+	private boolean isValidName(String name) {
+		if (name == null || name.length() < 3
+				|| !name.matches("[A-Z][a-zA-Z]*"))
+			return false;
+		else
+			return true;
+	}
+
+	//Method for Email validation
+	private boolean isValidEmail(String email) {
+		if (email == null
+				|| email.length() < 1
+				|| !email
+						.matches("[A-Z0-9._%+-][A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{3}"))
+			return false;
+		else
+			return true;
+	}
+	
+	//Method for Password
+	private boolean isValidPassword(String password, String confirmPass){
+		if(password != null && confirmPass != null && password.equals(confirmPass) && password.length() >5)
+			return true;
+		else
+			return false;
+	}
+
 }
