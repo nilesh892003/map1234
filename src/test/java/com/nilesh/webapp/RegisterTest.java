@@ -68,6 +68,7 @@ public class RegisterTest{
 	@Test
 	public void shouldValidateFirstName() throws  ServletException, IOException {
 		when(request.getParameter("fname")).thenReturn("b");
+		when(request.getParameter("email")).thenReturn("example");
 		registerService.doPost(request, response);
 		verify(request).setAttribute("fname", "First Name should be at least 3 character long");
 		verify(request).getRequestDispatcher("./register.jsp");
@@ -77,6 +78,7 @@ public class RegisterTest{
 	@Test
 	public void shouldValidateLastName() throws ServletException, IOException {
 		when(request.getParameter("lname")).thenReturn("N");
+		when(request.getParameter("email")).thenReturn("example");
 		registerService.doPost(request, response);
 		verify(request).setAttribute("lname", "Last Name should be at least 3 character long");
 		verify(request).getRequestDispatcher("./register.jsp");
@@ -96,6 +98,7 @@ public class RegisterTest{
 	public void shouldValidatePassword() throws ServletException, IOException{
 		when(request.getParameter("password")).thenReturn("test");
 		when(request.getParameter("repassword")).thenReturn("test123");
+		when(request.getParameter("email")).thenReturn("example");
 		registerService.doPost(request, response);
 		verify(request).setAttribute("password", "Not a valid password");
 		verify(request).getRequestDispatcher("./register.jsp");
