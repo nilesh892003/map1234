@@ -95,6 +95,7 @@ public class Register extends HttpServlet {
 		}
 
 		else {
+
 			BasicCookieStore cookieStore = new BasicCookieStore();
 			BasicClientCookie cookie = new BasicClientCookie("SESSIONID",
 					"map1234");
@@ -131,7 +132,6 @@ public class Register extends HttpServlet {
 
 				HttpClientContext context = HttpClientContext.create();
 				HttpResponse res = client.execute(post, context);
-
 				List<URI> redirectLocations = context.getRedirectLocations();
 
 				if (res.getStatusLine().getStatusCode() == 200) {
@@ -175,9 +175,14 @@ public class Register extends HttpServlet {
 		String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-		Matcher matcher = pattern.matcher(email);
-		return matcher.matches();
-
+		if(email != null){
+			Matcher matcher = pattern.matcher(email);
+			return matcher.matches();
+			}
+		else
+		{
+			return false;
+		}
 	}
 
 	// Method for Password
